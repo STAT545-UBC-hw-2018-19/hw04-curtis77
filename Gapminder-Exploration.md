@@ -2,16 +2,13 @@ Gapminder-Exploration
 ================
 
 ``` r
+options(warn = -1)
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
-    ## Warning: replacing previous import by 'tibble::as_tibble' when loading
-    ## 'broom'
-
-    ## Warning: replacing previous import by 'tibble::tibble' when loading 'broom'
+    ## Note: the specification for S3 class "difftime" in package 'lubridate' seems equivalent to one from package 'hms': not turning on duplicate class definitions for this class.
 
 ``` r
-suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(gapminder))
 ```
 

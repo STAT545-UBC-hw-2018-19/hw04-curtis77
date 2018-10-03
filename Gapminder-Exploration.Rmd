@@ -4,7 +4,6 @@ output: github_document
 ---
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
-suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(gapminder))
 ```
 
@@ -25,20 +24,42 @@ For the reshaping task, I chose activity number 3. In addition, I chose to compu
 ```{r results = 'asis'}
 df <- gapminder %>%
   group_by(continent, year) %>%
-  summarize(medLifeExp = median(lifeExp)) %>%
-  spread(key = "continent", value = "medLifeExp") 
-knitr::kable(df, 'markdown') # print table
+  summarize(medLifeExp = median(lifeExp)) %>% # get median life expectancy for each combination of year and continent
+  spread(key = "continent", value = "medLifeExp") # creates a variable for each continent
+
+knitr::kable(df) # print table
+
 ggplot(df, aes(year, Asia)) + 
-    geom_line() +
+    geom_line() + # plots a line plot
     ggtitle("Asia Median Life Expectancy versus Year") + 
     xlab("Year") + 
     ylab("Median Life Expectancy")
 ```
-
-A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia.
+A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia, using a line splot.
 
 ## Join Task
 
-```{r}
+For this task, I chose activity 1. I also experimented with the merge function. I chose to join the gapminder dataset with a new dataset containing 7 countries from the original gapminder dataset, with their capitols and currencies. I filtered by the year 2007 to ensure I don't have multiple copies of each country in my final dataset.
+```{r results = 'asis'}
+olddf <- gapminder %>%
+  filter(year == 2007) # keep only data points from 2007 
 
+newdf <- tribble(
+  ~country, ~capitol, ~currency,
+  'Germany', 'Berlin', 'Euro',
+  'United Kingdom', 'London', 'Pound',
+  'Italy', 'Rome', 'Euro',
+  'France', ' Paris', 'Euro',
+  'Japan', 'Tokyo', 'Yen',
+  'China', 'Beijing', 'Yuan',
+  'Korea, Rep.', 'Seoul', 'Won'
+) # creates a new dataset with various countries and their capitols
+
+df <- inner_join(olddf, newdf, by = 'country') # joins both created tables by country
+dfMerge <- merge(olddf, newdf, by.x = 'country') # joins tables again, except with different function
+
+knitr::kable(df) # print table created with join
+knitr::kable(dfMerge) # print table created with merge
 ```
+
+I was able to get the exact same tables using the inner join and merge functions. Instead of the inner join function, I could have also used the right join function, and gotten the same result, assuming I treat the original gapmidner dataset as the left dataset and the new dataset as the right dataset. This is because the new dataset I created only contained a subset of the countries in the gapminder dataset. Using the left join, however, would have resulted in a dataset with many rows containing an n/a values, unless I treated the new dataset as the left dataset.
