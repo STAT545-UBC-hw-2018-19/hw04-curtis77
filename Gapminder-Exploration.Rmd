@@ -3,6 +3,7 @@ title: "Gapminder-Exploration"
 output: github_document
 ---
 ```{r}
+options(warn = -1) # supresses all warnings
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(gapminder))
 ```

@@ -2,13 +2,11 @@ Gapminder-Exploration
 ================
 
 ``` r
+options(warn = -1) # supresses all warnings
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
-    ## Warning: replacing previous import by 'tibble::as_tibble' when loading
-    ## 'broom'
-
-    ## Warning: replacing previous import by 'tibble::tibble' when loading 'broom'
+    ## Note: the specification for S3 class "difftime" in package 'lubridate' seems equivalent to one from package 'hms': not turning on duplicate class definitions for this class.
 
 ``` r
 suppressPackageStartupMessages(library(gapminder))
@@ -82,12 +80,6 @@ newdf <- tribble(
 ) # creates a new dataset with various countries and their capitols
 
 df <- inner_join(olddf, newdf, by = 'country') # joins both created tables by country
-```
-
-    ## Warning: Column `country` joining factor and character vector, coercing
-    ## into character vector
-
-``` r
 dfMerge <- merge(olddf, newdf, by.x = 'country') # joins tables again, except with different function
 
 knitr::kable(df) # print table created with join
