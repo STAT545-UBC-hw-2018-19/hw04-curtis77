@@ -1,9 +1,6 @@
 ---
 title: "Gapminder-Exploration"
-output: 
-  html_document:
-    keep_md: yes
-    theme: cerulean
+output: github_document
 ---
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
@@ -29,7 +26,7 @@ df <- gapminder %>%
   group_by(continent, year) %>%
   summarize(medLifeExp = median(lifeExp)) %>%
   spread(key = "continent", value = "medLifeExp") 
-knitr::kable(df) # print table
+knitr::kable(df, 'markdown') # print table
 ggplot(df, aes(year, Asia)) + 
     geom_line() +
     ggtitle("Asia Median Life Expectancy versus Year") + 
