@@ -24,7 +24,7 @@ library(tidyverse)
 ## Data Reshaping Task
 
 For the reshaping task, I chose activity number 3. In addition, I chose to compute the median life expectancy for each combination of continent and year. To reformat the data with columns for each of the continents, I used the the spread function.
-```{r}
+```{r results = 'asis'}
 df <- gapminder %>%
   group_by(continent, year) %>%
   summarize(medLifeExp = median(lifeExp)) %>%
