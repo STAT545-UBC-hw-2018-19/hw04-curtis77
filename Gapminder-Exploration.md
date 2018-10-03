@@ -2,11 +2,13 @@ Gapminder-Exploration
 ================
 
 ``` r
-options(warn = -1)
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
-    ## Note: the specification for S3 class "difftime" in package 'lubridate' seems equivalent to one from package 'hms': not turning on duplicate class definitions for this class.
+    ## Warning: replacing previous import by 'tibble::as_tibble' when loading
+    ## 'broom'
+
+    ## Warning: replacing previous import by 'tibble::tibble' when loading 'broom'
 
 ``` r
 suppressPackageStartupMessages(library(gapminder))
@@ -28,9 +30,10 @@ For the reshaping task, I chose activity number 3. In addition, I chose to compu
 ``` r
 df <- gapminder %>%
   group_by(continent, year) %>%
-  summarize(medLifeExp = median(lifeExp)) %>%
-  spread(key = "continent", value = "medLifeExp") 
-knitr::kable(df, 'markdown') # print table
+  summarize(medLifeExp = median(lifeExp)) %>% # get median life expectancy for each combination of year and continent
+  spread(key = "continent", value = "medLifeExp") # creates a variable for each continent
+
+knitr::kable(df) # print table
 ```
 
 |  year|   Africa|  Americas|    Asia|   Europe|  Oceania|
@@ -50,15 +53,68 @@ knitr::kable(df, 'markdown') # print table
 
 ``` r
 ggplot(df, aes(year, Asia)) + 
-    geom_line() +
+    geom_line() + # plots a line plot
     ggtitle("Asia Median Life Expectancy versus Year") + 
     xlab("Year") + 
     ylab("Median Life Expectancy")
 ```
 
-![](Gapminder-Exploration_files/figure-markdown_github/unnamed-chunk-2-1.png)
-
-A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia.
+![](Gapminder-Exploration_files/figure-markdown_github/unnamed-chunk-2-1.png) A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia, using a line splot.
 
 Join Task
 ---------
+
+For this task, I chose activity 1. I also experimented with the merge function. I chose to join the gapminder dataset with a new dataset containing 7 countries from the original gapminder dataset, with their capitols and currencies. I filtered by the year 2007 to ensure I don't have multiple copies of each country in my final dataset.
+
+``` r
+olddf <- gapminder %>%
+  filter(year == 2007) # keep only data points from 2007 
+
+newdf <- tribble(
+  ~country, ~capitol, ~currency,
+  'Germany', 'Berlin', 'Euro',
+  'United Kingdom', 'London', 'Pound',
+  'Italy', 'Rome', 'Euro',
+  'France', ' Paris', 'Euro',
+  'Japan', 'Tokyo', 'Yen',
+  'China', 'Beijing', 'Yuan',
+  'Korea, Rep.', 'Seoul', 'Won'
+) # creates a new dataset with various countries and their capitols
+
+df <- inner_join(olddf, newdf, by = 'country') # joins both created tables by country
+```
+
+    ## Warning: Column `country` joining factor and character vector, coercing
+    ## into character vector
+
+``` r
+dfMerge <- merge(olddf, newdf, by.x = 'country') # joins tables again, except with different function
+
+knitr::kable(df) # print table created with join
+```
+
+| country        | continent |  year|  lifeExp|         pop|  gdpPercap| capitol | currency |
+|:---------------|:----------|-----:|--------:|-----------:|----------:|:--------|:---------|
+| China          | Asia      |  2007|   72.961|  1318683096|   4959.115| Beijing | Yuan     |
+| France         | Europe    |  2007|   80.657|    61083916|  30470.017| Paris   | Euro     |
+| Germany        | Europe    |  2007|   79.406|    82400996|  32170.374| Berlin  | Euro     |
+| Italy          | Europe    |  2007|   80.546|    58147733|  28569.720| Rome    | Euro     |
+| Japan          | Asia      |  2007|   82.603|   127467972|  31656.068| Tokyo   | Yen      |
+| Korea, Rep.    | Asia      |  2007|   78.623|    49044790|  23348.140| Seoul   | Won      |
+| United Kingdom | Europe    |  2007|   79.425|    60776238|  33203.261| London  | Pound    |
+
+``` r
+knitr::kable(dfMerge) # print table created with merge
+```
+
+| country        | continent |  year|  lifeExp|         pop|  gdpPercap| capitol | currency |
+|:---------------|:----------|-----:|--------:|-----------:|----------:|:--------|:---------|
+| China          | Asia      |  2007|   72.961|  1318683096|   4959.115| Beijing | Yuan     |
+| France         | Europe    |  2007|   80.657|    61083916|  30470.017| Paris   | Euro     |
+| Germany        | Europe    |  2007|   79.406|    82400996|  32170.374| Berlin  | Euro     |
+| Italy          | Europe    |  2007|   80.546|    58147733|  28569.720| Rome    | Euro     |
+| Japan          | Asia      |  2007|   82.603|   127467972|  31656.068| Tokyo   | Yen      |
+| Korea, Rep.    | Asia      |  2007|   78.623|    49044790|  23348.140| Seoul   | Won      |
+| United Kingdom | Europe    |  2007|   79.425|    60776238|  33203.261| London  | Pound    |
+
+I was able to get the exact same tables using the inner join and merge functions. Instead of the inner join function, I could have also used the right join function, and gotten the same result, assuming I treat the original gapmidner dataset as the left dataset and the new dataset as the right dataset. This is because the new dataset I created only contained a subset of the countries in the gapminder dataset. Using the left join, however, would have resulted in a dataset with many rows containing an n/a values, unless I treated the new dataset as the left dataset.
