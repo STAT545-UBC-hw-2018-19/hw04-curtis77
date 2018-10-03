@@ -1,6 +1,6 @@
 # STAT 545A
 
-## Assignment 3
+## Assignment 4
 
 This repository contains all files for this assignment.
 
