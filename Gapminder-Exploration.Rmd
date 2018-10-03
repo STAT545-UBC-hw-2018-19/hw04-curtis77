@@ -1,0 +1,23 @@
+---
+title: "Gapminder-Exploration"
+output: 
+  html_document:
+    keep_md: yes
+    theme: cerulean
+---
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(gapminder))
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r cars}
+library(gapminder)
+library(tidyverse)
+```
+
