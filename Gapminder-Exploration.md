@@ -2,7 +2,7 @@ Gapminder-Exploration
 ================
 
 ``` r
-options(warn = -1) # supresses all warnings
+options(warn = -1) # supresses warnings
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
@@ -57,7 +57,9 @@ ggplot(df, aes(year, Asia)) +
     ylab("Median Life Expectancy")
 ```
 
-![](Gapminder-Exploration_files/figure-markdown_github/unnamed-chunk-2-1.png) A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia, using a line splot.
+![](Gapminder-Exploration_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+A very simple task with this new data format is the ability to plot median life expectancy for some given continent versus year. Each continent is now treated as a quantitative variable, so we can use, for example, a line plot or scatterplot. As an example, I choose to plot the median life expectancy versus year for Asia, using a line splot.
 
 Join Task
 ---------
