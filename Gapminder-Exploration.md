@@ -11,6 +11,7 @@ suppressPackageStartupMessages(library(tidyverse))
     ## Warning: replacing previous import by 'tibble::tibble' when loading 'broom'
 
 ``` r
+suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(gapminder))
 ```
 

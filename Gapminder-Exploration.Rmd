@@ -4,6 +4,7 @@ output: github_document
 ---
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tibble))
 suppressPackageStartupMessages(library(gapminder))
 ```
 
