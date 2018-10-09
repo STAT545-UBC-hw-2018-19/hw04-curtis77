@@ -55,7 +55,7 @@ newdf <- tribble(
   'Japan', 'Tokyo', 'Yen',
   'China', 'Beijing', 'Yuan',
   'Korea, Rep.', 'Seoul', 'Won'
-) # creates a new dataset with various countries and their capitols
+) # creates a new dataset with various countries and their capitols and currency
 
 df <- inner_join(olddf, newdf, by = 'country') # joins both created tables by country
 dfMerge <- merge(olddf, newdf, by.x = 'country') # joins tables again, except with different function
